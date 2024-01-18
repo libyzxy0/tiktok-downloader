@@ -1,13 +1,13 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { getVideoInfo } from './src/tikwm.js';
 
 const app = express()
 const port = process.env.PORT || 5000;
 
-app.get('/', (_req: Request, res: Response) => {
+app.get('/', (req, res) => {
   return res.send('Tiktok downloader API');
 })
-app.get('/api', async (req: Request, res: Response) => {
+app.get('/api', async (req, res) => {
   const { url } = req.query;
   try {
     const data = await getVideoInfo(url);

@@ -31,7 +31,7 @@ const instance = axios.create({
 * @returns {object} 
 */
 
-const getVideoInfo = async (url): Promise<any> => {
+const getVideoInfo = async (url) => {
   try {
     const response = await instance.post('/api/', { url });
     return response.data;
