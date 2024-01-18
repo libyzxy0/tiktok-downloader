@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { getVideoInfo } from './src/download.ts';
+import { getVideoInfo } from './src/tikwm.js';
 
 const app = express()
 const port = process.env.PORT || 5000;
