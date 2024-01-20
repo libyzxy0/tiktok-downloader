@@ -4,24 +4,69 @@
   }
   const author = () => {
     alert('This website is made by Jan Liby Dela Costa.')
-  }
+  };
   const url = ref("");
   const btnIsLoading = ref(false);
+  const isError = ref(false);
   const downloaded = ref({});
-  const clickDownload = () => {
-    const { pending, data } = useFetch('https://api.tikdown.click/api?url=' + url, {
-      lazy: true,
-      server: false
-    });
-    if(pending) {
-      btnIsLoading.value = true;
-    } else {
-      btnIsLoading.value = false;
-      downloaded.value = data;
-      alert(JSON.stringify(data))
-      downloadDialog.showModal();
+
+  const clickDownload = async () => {
+  btnIsLoading.value = true;
+
+  try {
+    const response = await fetch('https://api.tikdown.click/api?url=' + url.value);
+
+    if (!response.ok) {
+      isError.value = true;
+      setTimeout(() => {
+        isError.value = false;
+      }, 3000)
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    const data = await response.json();
+    if(!data?.id) {
+      isError.value = true;
+      setTimeout(() => {
+        isError.value = false;
+      }, 3000)
+    }
+    btnIsLoading.value = false;
+
+    downloaded.value = data;
+    downloadDialog.showModal();
+  } catch (error) {
+    isError.value = true;
+      setTimeout(() => {
+        isError.value = false;
+      }, 3000)
+    console.error("Error during API request:", error);
+    btnIsLoading.value = false;
   }
+};
+
+const downloadOnDevice = () => {
+  const downloadableUrl = `https://www.tikwm.com/video/media/hdplay/${downloaded.value.id}.mp4`;
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getMonth() + 1}_${currentDate.getDate()}_${currentDate.getFullYear()}`;
+  const randomString = Math.random().toString(36).substring(2, 15);
+
+  const fileName = `tikdown.click_${formattedDate}_${randomString}.mp4`;
+  fetch(downloadableUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Download failed:', error));
+};
+
 </script>
 <template>
   <dialog id="downloadDialog" class="modal">
@@ -33,12 +78,11 @@
     <p class="py-4 text-white">Choose format you want to download.</p>
     <div class="flex flex-col items-center">
       <div class="w-auto h-auto rounded-xl mb-5 bg-gradient-to-tl from-slate-900 to-slate-700 bg-gradient-to-r ring-1 ring-purple-400 shadow">
-        <video controls poster="" class="rounded-xl w-[19rem] h-[19rem]">
-          <source src="">
+        <video v-if="downloaded.id" controls :poster="'https://www.tikwm.com' + downloaded.cover" class="rounded-xl w-[19rem] h-[19rem]">
+          <source :src="downloaded?.id ? `https://www.tikwm.com/video/media/hdplay/${downloaded.id}.mp4` : ''">
         </video>
       </div>
-      <button class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white">Download mp4</button>
-      <button class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow mt-3 text-white">Download mp3</button>
+      <button @click="downloadOnDevice" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white">Download mp4</button>
     </div>
   </div>
   </dialog>
@@ -52,10 +96,10 @@
     </nav>
     <h1 class="text-center text-purple-400 text-[33px] mx-4 mt-7 font-bold bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent">Download Tiktok Video using Link!</h1>
     <div class="flex flex-col justify-center items-center my-5">
-      <div class="h-12 w-[80%] rounded-full bg-gradient-to-r from-purple-500 via-red-500 to-pink-500 p-[1px]">
+      <div :class="isError ? 'bg-red-500' : 'bg-gradient-to-r from-purple-500 via-red-500 to-pink-500'" class="h-12 w-[80%] rounded-full p-[1.5px]">
         <input v-model="url" type="text" class="outline-none w-full h-full rounded-full bg-slate-700 px-4 py-2 text-white font-medium" placeholder="Enter tiktok url.">
       </div>
-      <button class="border-none bg-gradient-to-r from-purple-500 via-red-500 to-pink-500 w-[80%] py-3 rounded-full mt-4 shadow text-white font-medium btn" @click="clickDownload">Download</button>
+      <button class="border-none bg-gradient-to-r from-purple-500 via-red-500 to-pink-500 w-[80%] py-3 rounded-full mt-4 shadow text-white font-medium btn" @click="clickDownload">{{ btnIsLoading ? 'Downloading' : 'Download' }}</button>
     </div>
     <div class="mt-3 flex flex-col items-center mx-8">
       <h1 class="text-xl font-bold bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent">How to download?</h1>
