@@ -9,7 +9,7 @@
   const btnIsLoading = ref(false);
   const isError = ref(false);
   const downloaded = ref({});
-
+  const isDownloading = ref(false);
   const clickDownload = async () => {
   btnIsLoading.value = true;
 
@@ -47,6 +47,7 @@
 
 const downloadOnDevice = () => {
   const downloadableUrl = `https://www.tikwm.com/video/media/hdplay/${downloaded.value.id}.mp4`;
+  isDownloading.value = true;
   const currentDate = new Date();
   const formattedDate = `${currentDate.getMonth() + 1}_${currentDate.getDate()}_${currentDate.getFullYear()}`;
   const randomString = Math.random().toString(36).substring(2, 15);
@@ -63,8 +64,12 @@ const downloadOnDevice = () => {
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
+      isDownloading.value = false;
     })
-    .catch(error => console.error('Download failed:', error));
+    .catch(error => { 
+      isDownloading.value = false;
+      console.error('Download failed:', error)
+    });
 };
 
 </script>
@@ -82,7 +87,7 @@ const downloadOnDevice = () => {
           <source :src="downloaded?.id ? `https://www.tikwm.com/video/media/hdplay/${downloaded.id}.mp4` : ''">
         </video>
       </div>
-      <button @click="downloadOnDevice" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white">Download mp4</button>
+      <button @click="downloadOnDevice" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white">{{ isDownloading ? 'Maghintay ka muna' : 'Download Video' }}</button>
     </div>
   </div>
   </dialog>
