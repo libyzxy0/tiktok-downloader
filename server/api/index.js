@@ -30,13 +30,13 @@ const handleDownload = (req, res, videoType) => {
     let url;
     switch (videoType) {
       case 'hd':
-        url = `https://www.tikwm.com/media/hdplay/${id}.mp4`;
+        url = `https://www.tikwm.com/video/media/hdplay/${id}.mp4`;
         break;
       case 'nl':
-        url = `https://www.tikwm.com/media/play/${id}.mp4`;
+        url = `https://www.tikwm.com/video/media/play/${id}.mp4`;
         break;
       case 'wm':
-        url = `https://www.tikwm.com/media/wmplay/${id}.mp4`;
+        url = `https://www.tikwm.com/video/media/wmplay/${id}.mp4`;
         break;
       default:
         throw new Error('Invalid video type');

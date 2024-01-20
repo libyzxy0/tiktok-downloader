@@ -45,7 +45,7 @@
 };
 
 const downloadOnDevice = (type) => {
-  const urlToDownload = `https://tikdown.click/api/download/${type}/${downloaded.value.id}`;
+  const urlToDownload = `https://api.tikdown.click/api/download/${type}/${downloaded.value.id}`;
   window.location.href = urlToDownload;
 };
 </script>
