@@ -63,9 +63,9 @@ const downloadOnDevice = (type) => {
     </div>
   </div>
   </dialog>
-  <div class="bg-gradient-to-tl from-slate-800 to-slate-900 bg-gradient-to-r w-full h-screen opacity-90 overflow-y-auto pb-5">
+  <div class="bg-gradient-to-tl from-slate-800 to-slate-900 bg-gradient-to-r w-full h-screen opacity-90 overflow-y-auto pb-3">
     <Navbar />
-    <h1 class="text-center text-purple-400 text-[30px] md:text-[40px] mx-4 mt-7 font-bold bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent mt-20">Download Tiktok Video without watermark!</h1>
+    <h1 class="text-center text-purple-400 text-[30px] md:text-[40px] mx-4 mt-7 font-bold bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent mt-[5rem]">Download Tiktok Video without watermark!</h1>
     <div class="flex flex-col justify-center items-center my-4">
       <div :class="isError ? 'bg-red-500' : 'bg-gradient-to-r from-purple-500 via-red-500 to-pink-500'" class="h-12 w-[85%] md:w-[60%] rounded-full p-[1.5px]">
         <input v-model="url" type="text" class="outline-none w-full h-full rounded-full bg-slate-700 px-4 py-2 text-white font-medium" placeholder="Enter tiktok url.">

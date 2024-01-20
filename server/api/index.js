@@ -25,7 +25,6 @@ app.get('/api', async (req, res) => {
 
 const handleDownload = (req, res, videoType) => {
   const { id } = req.params;
-  console.log(id, videoType)
   try {
     let url;
     switch (videoType) {
