@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "format": "npx prettier . --write",
-    "start": "tsx index.ts"
+    "start": "node api/index.js"
   },
   "keywords": [
     "tiktok",

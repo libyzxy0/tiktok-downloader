@@ -10,8 +10,8 @@ app.get('/', (req, res) => {
 app.get('/api', async (req, res) => {
   const { url } = req.query;
   try {
-    const data = await getVideoInfo(url);
-    res.send(data)
+    const { data } = await getVideoInfo(url);
+    res.type('json').send(JSON.stringify(data, null, 2) + '\n');
   } catch (error) {
     console.log(error);
     res.status(500).send('Internal server error');
