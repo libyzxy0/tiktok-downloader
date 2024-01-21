@@ -11,7 +11,7 @@
         <h1 class="text-gray-400 mx-2"><b class="bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent">Step 3: </b>Click 'Download' button.</h1>
       </div>
       <div class="py-[3px] border-l-2 border-pink-400">
-        <h1 class="text-gray-400 mx-2"><b class="bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent">Step 4: </b>Choose video type either HD, 720, or with Watermark.</h1>
+        <h1 class="text-gray-400 mx-2"><b class="bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent">Step 4: </b>Choose video type either HD, 720p, or with Watermark.</h1>
       </div>
     </div>
 </template>

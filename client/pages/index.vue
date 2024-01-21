@@ -1,10 +1,16 @@
 <script setup>
+  useSeoMeta({
+    title: "Tikdown: Download Tiktok Video without watermark.", 
+    description: "Download Tiktok Video with tikdown.click without watermark.", 
+    ogTitle: "Tikdown: Download Tiktok Video without watermark.",
+    ogDescription: "Download Tiktok Video with tikdown.click without watermark.",
+    ogImage: "https://tikdown.click/favicon.ico"
+  })
   const url = ref("");
   const btnIsLoading = ref(false);
   const isError = ref(false);
   const downloaded = ref({});
   const clickDownload = async () => {
-  // downloadDialog.showModal();
   btnIsLoading.value = true;
   try {
     const response = await fetch('https://api.tikdown.click/api?url=' + url.value);
@@ -63,7 +69,7 @@ const downloadOnDevice = (type) => {
     </div>
   </div>
   </dialog>
-  <div class="bg-gradient-to-tl from-slate-800 to-slate-900 bg-gradient-to-r w-full h-screen opacity-90 overflow-y-auto pb-3">
+  <div class="bg-gradient-to-tl from-slate-800 to-slate-900 bg-gradient-to-r w-full h-screen opacity-90 overflow-y-auto">
     <Navbar />
     <h1 class="text-center text-purple-400 text-[30px] md:text-[40px] mx-4 mt-7 font-bold bg-gradient-to-r from-purple-500 via-red-400 to-pink-500 bg-clip-text text-transparent mt-[5rem]">Download Tiktok Video without watermark!</h1>
     <div class="flex flex-col justify-center items-center my-4">
