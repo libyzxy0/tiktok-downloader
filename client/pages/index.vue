@@ -91,8 +91,8 @@ const downloadOnDevice = (type) => {
     <p class="py-4 text-white">{{ downloaded?.id ? `@${downloaded?.author?.unique_id}(${downloaded?.author?.nickname}) | ${downloaded.title ? downloaded?.title + '|' : '' } ${downloaded.play_count} views | ${downloaded.region}` : 'Loading' }}</p>
     <div class="flex flex-col items-center">
       <div class="w-auto h-auto rounded-xl mb-5 bg-gradient-to-tl from-slate-900 to-slate-700 bg-gradient-to-r ring-1 ring-purple-400 shadow">
-        <video v-if="downloaded.id" controls :poster="'https://www.tikwm.com' + downloaded.cover" class="rounded-xl w-[19rem] h-[19rem]">
-          <source :src="downloaded?.id ? `https://www.tikwm.com/video/media/hdplay/${downloaded.id}.mp4` : ''">
+        <video v-if="downloaded.id" controls :poster="downloaded.cover" class="rounded-xl w-[19rem] h-[19rem]">
+          <source :src="downloaded?.id ? downloaded.play : ''">
         </video>
       </div>
       <button @click="downloadOnDevice('hd')" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white">Download HD (Beta)</button>
