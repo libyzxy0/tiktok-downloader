@@ -45,12 +45,13 @@
     }
 
     const data = await response.json();
-    if(!data?.id) {
+    console.log(data)
+    if(!data?.hd) {
       isError.value = true;
       setTimeout(() => {
         isError.value = false;
       }, 3000)
-      showError("Oppsss.. Error", "Please check your video url!")
+      showError("Oppsss.. Error", "Failed to download video!")
     }
     btnIsLoading.value = false;
 
@@ -68,13 +69,22 @@
 };
 
 const downloadOnDevice = (type) => {
-  const urlToDownload = `https://api.tikdown.click/api/download/${type}/${downloaded.value.id}`;
-  window.location.href = urlToDownload;
+  if(type == 'hd') {
+    const urlToDownload = `${downloaded.value.hd}`;
+    window.location.href = urlToDownload;
+  } else if (type == 'mp4') {
+    const urlToDownload = `${downloaded.value.mp4}`;
+    window.location.href = urlToDownload;
+  } else if(type == 'mp3') {
+    const urlToDownload = `${downloaded.value.mp3}`;
+    window.location.href = urlToDownload;
+  }
+  downloaded.value = {};
 };
 </script>
 <template>
   <dialog id="alertModal" class="modal">
-  <div class="modal-box bg-gradient-to-tl from-slate-800 to-slate-900 bg-gradient-to-r shadow">
+  <div class="modal-box bg-gradient-to-tl from-gray-900 to-gray-950 bg-gradient-to-r shadow">
     <h3 class="font-bold text-lg text-red-500">{{ error.title }}</h3>
     <p class="py-4 text-white">{{ error.message }}</p>
   </div>
@@ -83,21 +93,21 @@ const downloadOnDevice = (type) => {
   </form>
 </dialog>
   <dialog id="downloadDialog" class="modal">
-  <div class="modal-box bg-gradient-to-tl from-slate-800 to-slate-900 bg-gradient-to-r shadow">
+  <div class="modal-box bg-gradient-to-tl from-gray-900 to-gray-950 bg-gradient-to-r shadow">
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-white">✕</button>
     </form>
     <h3 class="font-bold text-2xl bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Download</h3>
-    <p class="py-4 text-white">{{ downloaded?.id ? `@${downloaded?.author?.unique_id}(${downloaded?.author?.nickname}) | ${downloaded.title ? downloaded?.title + '|' : '' } ${downloaded.play_count} views | ${downloaded.region}` : 'Loading' }}</p>
+    <p class="py-4 text-white">{{ downloaded?.hd ? `@${downloaded?.data.user?.unique_id}(${downloaded?.data.user?.nickname}) | ${downloaded.data.title ? downloaded?.data.title + '|' : '' } ${downloaded.data.views} views | ${downloaded.data.region}` : 'Loading...' }}</p>
     <div class="flex flex-col items-center">
       <div class="w-auto h-auto rounded-xl mb-5 bg-gradient-to-tl from-slate-900 to-slate-700 bg-gradient-to-r ring-1 ring-purple-400 shadow">
-        <video v-if="downloaded.id" controls :poster="downloaded.cover" class="rounded-xl w-[19rem] h-[19rem]">
-          <source :src="downloaded?.id ? downloaded.play : ''">
+        <video v-if="downloaded.hd" controls :poster="downloaded.poster" class="rounded-xl w-[19rem] h-[19rem]">
+          <source :src="downloaded?.hd ? downloaded.playback : ''">
         </video>
       </div>
-      <button @click="downloadOnDevice('hd')" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white">Download HD (Beta)</button>
-      <button @click="downloadOnDevice('nl')" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white mt-2">Download 720p</button>
-       <button @click="downloadOnDevice('wm')" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white mt-2">Download with Watermark</button>
+      <button @click="downloadOnDevice('hd')" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white">Download HD</button>
+      <button @click="downloadOnDevice('mp4')" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white mt-2">Download 720p</button>
+       <button @click="downloadOnDevice('mp3')" class="btn bg-gradient-to-r from-purple-500 to-pink-500 py-3 w-[90%] border-none rounded-full shadow text-white mt-2">Download MP3</button>
     </div>
   </div>
   </dialog>
